@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WRITE WITH YOUR HANDS // GESTURE → HYDRA</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="stage.css" />
+    <!-- p5.js + MediaPipe Hands + Hydra -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/hydra-synth"></script>
+  </head>
+
+  <!-- TABLE VERSION (cleaned 2026-11-27 from gesture-bitmap-hydra/index-data.html).
+       Each sign in the line is drawn from the 88 numbers of the hand that signed it (way 2 · fields). -->
+  <!-- LAPTOP SCREEN: full-screen camera + the written score along the bottom.
+       The visuals go to the second screen (output.html, press O).
+       T = trainer controls · O = open output window · F = full screen -->
+  <body class="stage">
+    <!-- full-screen camera (p5 canvas is mounted here) -->
+    <div id="p5-mount" class="camera-stage"></div>
+
+    <!-- live reading of the hand, top left -->
+    <div class="hud">
+      <div class="hud-badge" id="camera-status">INITIALIZING CAMERA...</div>
+      <div class="hud-match">
+        <span>READING: <strong id="live-label">—</strong></span>
+        <span id="lock-percent">0%</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="lock-bar"></div></div>
+    </div>
+
+    <!-- TRAINER PANEL (hidden for visitors, press T) -->
+    <div class="trainer-panel trainer-only">
+      <div class="trainer-row">
+        <strong>TRAINER</strong>
+        <span id="sample-counter">SAMPLES: 0</span>
+      </div>
+      <div class="trainer-row">
+        <label class="file-label" for="video-upload">TRAIN VIDEO</label>
+        <input type="file" id="video-upload" accept="video/mp4,video/webm,video/quicktime" />
+        <label class="file-label" for="json-upload">LOAD JSON</label>
+        <input type="file" id="json-upload" accept=".json" />
+        <button id="btn-export">SAVE JSON</button>
+      </div>
+      <div class="trainer-row">
+        <select id="gesture-select" aria-label="Select Gesture Label"></select>
+        <button id="btn-record" class="primary">HOLD [SPACE] TO RECORD</button>
+      </div>
+      <div class="trainer-row">
+        <button id="btn-output">OPEN OUTPUT WINDOW [O]</button>
+      </div>
+      <div class="trainer-row preset-bar">
+        <span class="preset-label">TEST:</span>
+        <button onclick="setStrip(['CIRCLE', 'DIGIT_5', 'SHRINKING'])">CIRCLE 5 SHRINK</button>
+        <button onclick="setStrip(['TRIANGLE', 'DOUBLE', 'FLOWY'])">TRIANGLE DOUBLE FLOW</button>
+        <button onclick="setStrip(['RECTANGLE', 'A_LOT', 'COLLAPSING'])">RECT LOT COLLAPSE</button>
+      </div>
+      <!-- small Hydra preview, only for checking without the second screen -->
+      <div class="preview-wrap viewport-wrap"><canvas id="hydra-canvas" width="480" height="300"></canvas></div>
+      <pre id="hydra-code-output">// press RUN to send your strip to Hydra</pre>
+    </div>
+
+    <!-- THE SCORE: what the person has written, read left to right -->
+    <section class="score">
+      <div class="score-row">
+        <div class="score-sheet" id="score-sheet"></div>
+        <span class="score-actions">
+          <button id="btn-undo">UNDO [⌫]</button>
+          <button id="btn-clear">CLEAR [C]</button>
+          <button id="btn-run" class="primary">RUN ▶ [ENTER]</button>
+        </span>
+      </div>
+    </section>
+
+    <script>window.SIGN_MODE = "data"; // signs drawn from the hand's numbers (way 2)</script>
+    <script src="symbols.js"></script>
+    <script src="symbols-punch.js"></script>
+    <script src="hydra_interpreter.js"></script>
+    <script src="datasign.js"></script>
+    <script src="score.js"></script>
+    <script src="sketch.js"></script>
+  </body>
+</html>

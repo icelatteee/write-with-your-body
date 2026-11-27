@@ -1,0 +1,334 @@
+:root {
+  --bg: #f6f6f6;
+  --surface: #ffffff;
+  --surface-muted: #efefef;
+  --ink: #111111;
+  --ink-muted: #666666;
+  --border: #d4d4d4;
+  --border-strong: #111111;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  line-height: 1.45;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top Header Bar */
+header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.brand-dot {
+  width: 10px;
+  height: 10px;
+  background: var(--ink);
+  display: inline-block;
+}
+
+.header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Monochrome Buttons & Inputs */
+button,
+select,
+.file-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--border-strong);
+  padding: 7px 12px;
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+  border-radius: 0;
+}
+
+button:hover,
+.file-label:hover {
+  background: var(--ink);
+  color: var(--surface);
+}
+
+button.primary {
+  background: var(--ink);
+  color: var(--surface);
+}
+
+button.primary:hover {
+  background: #333333;
+}
+
+button.recording {
+  background: var(--ink);
+  color: var(--surface);
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+/* Responsive Workspace Grid */
+main {
+  flex: 1;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 20px 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 960px) {
+  main {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+}
+
+/* Stage Cards */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+
+.card-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+}
+
+.card-header strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.viewport-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: #0e0e0e;
+  overflow: hidden;
+}
+
+.viewport-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  object-fit: cover;
+}
+
+.hud-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
+  border: 1px solid var(--border-strong);
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  pointer-events: none;
+}
+
+.card-controls {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.control-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+select {
+  flex: 1;
+  min-width: 180px;
+}
+
+/* Lock Progress Bar */
+.lock-meter {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lock-meta {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-muted);
+}
+
+.progress-track {
+  width: 100%;
+  height: 6px;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--ink);
+  transition: width 0.05s linear;
+}
+
+/* Bottom Full-Width Symbol Strip & Compiled Code */
+.strip-section {
+  grid-column: 1 / -1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.strip-container {
+  padding: 20px;
+  min-height: 136px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  background:
+    linear-gradient(to right, #f2f2f2 1px, transparent 1px) 0 0 / 20px 20px,
+    linear-gradient(to bottom, #f2f2f2 1px, transparent 1px) 0 0 / 20px 20px;
+}
+
+.empty-hint {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+
+.glyph-card {
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.glyph-card canvas {
+  image-rendering: pixelated;
+  display: block;
+}
+
+.glyph-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.glyph-cat {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+}
+
+.code-footer {
+  padding: 14px 20px;
+  background: var(--surface-muted);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+pre#hydra-code-output {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.preset-bar {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.preset-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-muted);
+  margin-right: 4px;
+}
+
+/* ===== 2026-11-25: visitor / trainer mode + write-then-run ===== */
+/* Trainer controls are hidden for visitors. Press T to show them. */
+body:not(.trainer) .trainer-only { display: none !important; }
+.header-trainer { display: inline-flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+.run-status {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  border: 1px solid var(--border);
+}
+.run-status.stale { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+.run-status.ran   { background: var(--surface); color: var(--ink); border-color: var(--ink); }
+
+/* Brief flash on the Hydra panel when a program is run */
+.viewport-wrap.just-ran { outline: 3px solid var(--ink); outline-offset: -3px; }

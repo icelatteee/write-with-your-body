@@ -1,0 +1,94 @@
+:root { --card: #efebe1; } /* punch-card paper colour */
+/* ===== 2026-11-25 · laptop "stage" layout: full-screen camera + score ===== */
+body.stage {
+  display: block;
+  height: 100vh;
+  overflow: hidden;
+  background: #0e0e0e;
+}
+
+/* full-screen camera */
+.camera-stage { position: fixed; inset: 0; }
+.camera-stage canvas { width: 100vw !important; height: 100vh !important; display: block; filter: grayscale(1); }
+
+/* live reading, top left */
+.hud {
+  position: fixed; top: 16px; left: 16px; width: 280px; z-index: 5;
+  background: rgba(255,255,255,0.94); border: 1px solid var(--ink); padding: 10px 12px;
+  font-family: var(--font-mono); font-size: 12px; display: flex; flex-direction: column; gap: 6px;
+}
+.hud .hud-badge { position: static; border: 0; padding: 0; background: none; font-size: 11px; color: var(--ink-muted); }
+.hud-match { display: flex; justify-content: space-between; }
+.hud-match strong { font-size: 14px; }
+
+/* trainer panel, top right (press T) */
+.trainer-panel {
+  position: fixed; top: 16px; right: 16px; width: 520px; max-height: calc(100vh - 260px); overflow: auto; z-index: 5;
+  background: var(--surface); border: 1px solid var(--ink); padding: 12px; display: flex; flex-direction: column; gap: 8px;
+  font-family: var(--font-mono); font-size: 12px;
+}
+.trainer-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+.trainer-row select { flex: 1; }
+.preview-wrap { aspect-ratio: 16 / 10; }
+.trainer-panel pre { font-family: var(--font-mono); font-size: 11px; white-space: pre-wrap; }
+
+/* THE SCORE: one line at the bottom, symbols over a drafting grid */
+.score {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 4;
+  background: transparent; border-top: 0;   /* sits straight on the live camera */
+}
+.score-row { display: flex; align-items: center; gap: 16px; padding-right: 16px; }
+
+.score-sheet {
+  position: relative;
+  flex: 1;
+  display: flex; align-items: center; gap: 20px;
+  height: 190px; padding: 0 24px;
+  overflow-x: auto; overflow-y: hidden;
+  font-family: var(--font-mono);
+  background: transparent; /* grid is drawn in the canvas, aligned to the holes */
+}
+.note {
+  flex: 0 0 auto; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.note canvas { image-rendering: pixelated; display: block; }
+.note-tag { font-size: 9px; font-weight: 700; letter-spacing: 0.04em; }
+.note.newest canvas { outline: 2px solid var(--ink); outline-offset: 3px; }
+.score-empty { position: absolute; left: 26px; top: 10px; font-size: 10px; color: #ffffff; letter-spacing: 0.06em; z-index: 3; }
+.score-sheet > canvas { flex: 0 0 auto; display: block; }
+
+.score-actions { display: flex; gap: 8px; flex: 0 0 auto; }
+.score-actions button { font-size: 13px; padding: 10px 14px; }
+/* RUN button stands out when there is something written that hasn't been run */
+#btn-run.needs-run { outline: 3px solid #ffffff; outline-offset: 3px; }
+
+/* playhead on RUN */
+.score-sheet::after {
+  content: ""; position: absolute; top: 10px; bottom: 10px; left: 0; width: 3px;
+  background: var(--ink); opacity: 0; pointer-events: none; z-index: 2;
+}
+.score-sheet.playing::after { animation: playhead 0.9s linear forwards; }
+@keyframes playhead {
+  0%   { left: 0; opacity: 1; }
+  95%  { opacity: 1; }
+  100% { left: var(--line-width, 100%); opacity: 0; }
+}
+
+/* ===== 2026-11-25 · white-on-camera aesthetic for the whole laptop screen ===== */
+/* live reading, top left: no box, white text, white bar */
+.hud {
+  background: transparent; border: 0; padding: 0; color: #fff;
+}
+.hud .hud-badge { color: rgba(255,255,255,0.7); }
+.hud-match strong { color: #fff; }
+.hud .progress-track { background: transparent; border: 1px solid rgba(255,255,255,0.6); height: 8px; }
+.hud .progress-fill { background: #fff; }
+
+/* buttons on the camera: white outline, RUN solid white */
+.score-actions button {
+  background: transparent; color: #fff; border: 1px solid #fff;
+}
+.score-actions button:hover { background: #fff; color: #111; }
+.score-actions button.primary { background: #fff; color: #111; border-color: #fff; }
+.score-actions button.primary:hover { background: rgba(255,255,255,0.8); }
