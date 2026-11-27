@@ -1,11 +1,3 @@
-# Write with your hands: gesture → Hydra prototype (table version)
-
-A clean copy of the prototype for the table setup, containing only the files it needs.
-Cleaned on 2026-11-27 from `../gesture-bitmap-hydra/` (`index-data.html`). The original folder is unchanged.
-
-You sign gestures in front of the laptop camera. Each recognised word is written as a **sign** in a line along the bottom. Press **RUN** and the line is translated into Hydra code, which plays as live visuals on the second screen.
-
----
 
 ## What's in the folder
 
@@ -80,13 +72,3 @@ The two windows talk to each other on their own. If the output window is opened 
 | Nothing loads at all | No internet (the libraries load from the web) |
 
 **Backup:** keep a screen recording of sign → RUN → visuals on the laptop in case the camera or Wi-Fi fails on the day.
-
----
-
-## For you (Kimmie): changing things
-
-- **What a word means:** edit its line in `hydra_interpreter.js` (`HYDRA_MAP`), e.g. `CIRCLE: { type: "object", code: "shape(64, 0.3, 0.01)", … }`. Change both `code` (the text shown) and `fn` (what actually runs).
-- **How long to hold a gesture:** `LOCK_THRESHOLD = 28` (frames) near the top of `sketch.js`. Higher = hold longer.
-- **How sure it must be:** `pred.confidence > 0.65` in `sketch.js`. Higher = fewer wrong words, but more misses.
-- **Retraining:** press T → pick a word → hold Space while signing → SAVE JSON → replace `gestures.json` in this folder. Keep a copy of the old one first.
-- The rest of the project (print pages, gallery, how-it-works, tools for the PDFs) stays in `../gesture-bitmap-hydra/`.
